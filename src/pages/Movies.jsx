@@ -8,13 +8,15 @@ import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Alert from 'react-bootstrap/Alert';
 
 export default function Movies() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [status, setStatus] = useState('idel');
   const [q, setQ] = useState('');
   const [pages, setPages] = useState(null);
   const [totalPage, setTotalPage] = useState(0);
-  const { searchResult, setSearchResult, status, setStatus } =
+  const { searchResult, setSearchResult, erorrMessedge, setErorrMessedge } =
     useStateContext();
 
   const handleChange = ({ target }) => {
@@ -35,7 +37,8 @@ export default function Movies() {
     setStatus('pending');
     try {
       const { results, page, total_pages } = await searchMovies({
-        searchQuery, pages
+        searchQuery,
+        pages,
       });
       setSearchResult(s => [...s, ...results]);
       setPages(page);
@@ -44,13 +47,13 @@ export default function Movies() {
       // if (!searchResult.length) {
       //   return console.log('Sorry, there are no movies matching your search query. Please try again.')
 
-        // setErorrMessedge(
-        //   'Sorry, there are no images matching your search query. Please try again.'
-        // );
+      // setErorrMessedge(
+      //   'Sorry, there are no images matching your search query. Please try again.'
+      // );
       // }
     } catch (error) {
       setStatus('rejected');
-      // setErorrMessedge('Oops...something went wrong');
+      setErorrMessedge('Oops...something went wrong');
       console.log(error);
     }
   };
@@ -61,24 +64,24 @@ export default function Movies() {
     fetchMovies();
   }, [searchQuery]);
   useEffect(() => {
-    if (pages===1) {
+    if (pages === 1) {
       return;
     }
     fetchMovies();
   }, [pages]);
   const isShowLoadeMore = !pages || totalPage > pages;
-  if(status === 'rejected'){
-    return <div>oopps</div>
-  }
-  if (status === 'pending') {
-    return <Loader />;
-  }
-  const cliakSearch = !q
+
+  const cliakSearch = !q;
   return (
     <>
       <Form onSubmit={handlSubmit}>
         <InputGroup className="mb-3">
-          <Button variant="outline-secondary" id="button-addon1" type="submit" disabled={cliakSearch? true: false}>
+          <Button
+            variant="outline-secondary"
+            id="button-addon1"
+            type="submit"
+            disabled={cliakSearch ? true : false}
+          >
             Search
           </Button>
           <Form.Control
@@ -90,15 +93,25 @@ export default function Movies() {
           />
         </InputGroup>
       </Form>
-      {(status === 'resolved')?(
-      <>
-        <SearchResults title={`Faund results ${Number(searchResult.length)}`}/>
-        {isShowLoadeMore && <Paginations setPages={setPages} />}
-      </>
-      ): (status === 'pending')}
+      {status === 'pending' && <Loader />}
+      {status === 'resolved' && (
+        <>
+          <SearchResults
+            title={`Faund results ${Number(searchResult.length)}`}
+          />
+          {isShowLoadeMore && <Paginations setPages={setPages} />}
+        </>
+      )}{' '}
+      {status === 'rejected' && (
+        <Alert variant="danger">
+          <Alert.Heading>{erorrMessedge}</Alert.Heading>
+          <p>
+            Change this and that and try again. Duis mollis, est non commodo
+            luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
+            Cras mattis consectetur purus sit amet fermentum.
+          </p>
+        </Alert>
+      )}
     </>
   );
-
-
 }
-

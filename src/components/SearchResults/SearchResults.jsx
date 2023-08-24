@@ -1,18 +1,14 @@
 import { useStateContext } from 'GlobalContext/GlobalContext';
-import Loader from 'components/Loader/Loader';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { useLocation } from 'react-router-dom';
 import { StyledLink } from './SearchResults.styled';
 import Card from 'react-bootstrap/Card';
 
 export default function SearchResults({title}) {
-  const { searchResult, status } = useStateContext();
+  const { searchResult } = useStateContext();
+
   const location = useLocation();
 
-  if (status === 'pending') {
-    return <Loader />;
-  }
-  if (status === 'resolved') {
     return (
       <ListGroup variant="flush">
         <Card.Title>{title}</Card.Title>
@@ -32,7 +28,5 @@ export default function SearchResults({title}) {
       </ListGroup>
     );
   }
-  if (status === 'rejected') {
-    return <div>oops</div>;
-  }
-}
+
+

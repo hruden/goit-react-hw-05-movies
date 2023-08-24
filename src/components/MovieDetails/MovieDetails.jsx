@@ -15,22 +15,30 @@ import {
   Wraper,
 } from './MovieDetails.styled';
 import { moviesDeteils } from 'Fetch/fetch';
+// import { useStateContext } from 'GlobalContext/GlobalContext';
+import { nanoid } from 'nanoid'
 import { useStateContext } from 'GlobalContext/GlobalContext';
+import Alert from 'react-bootstrap/Alert';
 
 export default function MovieDetails() {
   const location = useLocation();
   const { movieId } = useParams();
-  const { status, setStatus } = useStateContext();
+  // const { status, setStatus } = useStateContext();
+  const [status, setStatus] = useState('idel')
   const [title, setTitle] = useState('');
   const [overview, srtOverview] = useState('');
   const [genres, setGenres] = useState([]);
   const [userScore, setUserScore] = useState(null);
   const [posterImg, setPosterImg] = useState('');
+  const { erorrMessedge, setErorrMessedge } = useStateContext();
+
+  const castId = nanoid()
+  const reviewsId = nanoid()
 
   const fetchMoviesDeteils = async () => {
     setStatus('pending');
     try {
-      const { title, overview, genres, vote_average, poster_path } =
+      const { title, overview, genres, vote_average, poster_path} =
         await moviesDeteils({
           movieId,
         });
@@ -42,6 +50,7 @@ export default function MovieDetails() {
       setStatus('resolved');
     } catch (error) {
       setStatus('rejected');
+      setErorrMessedge('Oops...something went wrong');
       console.log(error);
     }
   };
@@ -49,7 +58,15 @@ export default function MovieDetails() {
     fetchMoviesDeteils();
   }, []);
   if (status === 'rejected') {
-    return <div>oops</div>;
+    return (
+    <Alert variant="danger">
+        <Alert.Heading>{erorrMessedge}</Alert.Heading>
+        <p>
+          Change this and that and try again. Duis mollis, est non commodo
+          luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
+          Cras mattis consectetur purus sit amet fermentum.
+        </p>
+      </Alert>)
   }
   if (status === 'pending') {
     return <Loader />;
@@ -65,7 +82,7 @@ export default function MovieDetails() {
             <ImgCard
               variant="top"
               src={`https://image.tmdb.org/t/p/w500${posterImg}`}
-              width={200}
+              width={250}
               height={400}
             />
           </Card>
@@ -84,8 +101,7 @@ export default function MovieDetails() {
         </Wraper>
         <AditionalTitle>Aditional informations</AditionalTitle>
         <ul>
-          <li>
-            {' '}
+          <li key={castId}>
             <StyledLink
               to={`/movies/${movieId}/cast`}
               state={{ from: location.pathname }}
@@ -93,8 +109,7 @@ export default function MovieDetails() {
               Cast
             </StyledLink>
           </li>
-          <li>
-            {' '}
+          <li key={reviewsId}>
             <StyledLink
               to={`/movies/${movieId}/reviews`}
               state={{ from: location.pathname }}

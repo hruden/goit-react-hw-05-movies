@@ -1,14 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { movieReviews } from "Fetch/fetch";
-import { useStateContext } from "GlobalContext/GlobalContext";
 import Loader from "components/Loader/Loader";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { ReviewsItem } from "./Reviews.styled";
+import Alert from 'react-bootstrap/Alert';
+import { useStateContext } from "GlobalContext/GlobalContext";
 
 export default function Reviews(){
-    const { status, setStatus } = useStateContext();
+    const [status, setStatus] = useState('idel');
     const { movieId } = useParams();
     const [results, setResults] = useState([]);
+    const { erorrMessedge, setErorrMessedge } = useStateContext();
+
     const fetchReviews = async () => {
       setStatus('pending');
       try {
@@ -17,20 +21,23 @@ export default function Reviews(){
         });
         setResults([...results]);
         setStatus('resolved');
-        console.log(results)
+        if(!results.length){
+          setStatus('rejected');
+          setErorrMessedge('Reviews is not found');
+        }
       } catch (error) {
         setStatus('rejected');
-        // setErorrMessedge('Oops...something went wrong');
+        setErorrMessedge('Oops...something went wrong, reload the page');
         console.log(error);
       }
     };
     useEffect(()=>{
       fetchReviews()
       return
-    },[results])
+    },[])
   
     if(status==='rejected'){
-      return <div>oops</div>
+      return <Alert variant='light'>{erorrMessedge}</Alert>
     }
     if (status === 'pending') {
       return <Loader />;
@@ -41,10 +48,10 @@ export default function Reviews(){
       <ul>
         {results.map(({ id, author, content }) => {
           return (
-            <li key={id}>
+            <ReviewsItem key={id}>
               <h5>{author}</h5>
               <p>{content}</p>
-            </li> 
+            </ReviewsItem> 
           );
         })} 
       </ul>

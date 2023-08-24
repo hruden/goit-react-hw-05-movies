@@ -41,7 +41,7 @@ export const MoviesName = styled(Card.Title)`
   font-size: xx-large;
 `
 export const ImgCard = styled(Card.Img)`
-  width: 200px;
+  width: 250px;
 `
 export const MovieDeteils = styled(Card.Body)`
   max-width: 600px;
