@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import { CastItem, CastList } from './Cast.styled';
 import Alert from 'react-bootstrap/Alert';
 import { useStateContext } from 'GlobalContext/GlobalContext';
+import Img from '../img/photo.jpg'
 
 
 export default function Cast() {
@@ -52,7 +53,7 @@ export default function Cast() {
             <CastItem key={id}>
               <img
               // src='../../img/photo.jpg'
-                src={ profile_path ?(`https://image.tmdb.org/t/p/w500${profile_path}`):(`../img/photo.jpg`)}
+                src={ profile_path ?`https://image.tmdb.org/t/p/w500${profile_path}`: Img}
                 alt={name}
                 width={100}
                 height={160}

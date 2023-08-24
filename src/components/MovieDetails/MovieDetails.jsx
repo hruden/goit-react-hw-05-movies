@@ -15,7 +15,6 @@ import {
   Wraper,
 } from './MovieDetails.styled';
 import { moviesDeteils } from 'Fetch/fetch';
-// import { useStateContext } from 'GlobalContext/GlobalContext';
 import { nanoid } from 'nanoid'
 import { useStateContext } from 'GlobalContext/GlobalContext';
 import Alert from 'react-bootstrap/Alert';
@@ -23,7 +22,6 @@ import Alert from 'react-bootstrap/Alert';
 export default function MovieDetails() {
   const location = useLocation();
   const { movieId } = useParams();
-  // const { status, setStatus } = useStateContext();
   const [status, setStatus] = useState('idel')
   const [title, setTitle] = useState('');
   const [overview, srtOverview] = useState('');
@@ -94,7 +92,7 @@ export default function MovieDetails() {
             <Card.Title>Genres</Card.Title>
             <MovieGenders>
               {genres.map(({ name, id }) => {
-                return <li><Card.Text key={id}>{name}</Card.Text></li>;
+                return <li key={id}><Card.Text>{name}</Card.Text></li>;
               })}
             </MovieGenders>
           </MovieDeteils>
