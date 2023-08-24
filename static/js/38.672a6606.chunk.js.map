@@ -1,1 +1,0 @@
-{"version":3,"file":"static/js/38.672a6606.chunk.js","mappings":"gMAAe,SAASA,IACpB,OACAC,EAAAA,EAAAA,KAAA,SAEJ,C","sources":["components/NotFoundPage/NotFoundPage.jsx"],"sourcesContent":["export default function NotFoundPage(){\n    return(\n    <div></div>\n    )\n}"],"names":["NotFoundPage","_jsx"],"sourceRoot":""}
