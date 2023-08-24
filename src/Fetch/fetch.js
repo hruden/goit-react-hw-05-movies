@@ -24,7 +24,7 @@ export const trendingMovies = async()=>{
 
 const options = {
   method: 'GET',
-  url: 'https://api.themoviedb.org/3/trending/all/day',
+  url: 'https://api.themoviedb.org/3/trending/movie/day',
   params: {language: 'en-US'},
   headers: {
     accept: 'application/json',

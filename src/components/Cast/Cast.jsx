@@ -9,7 +9,8 @@ export default function Cast() {
   const { status, setStatus } = useStateContext();
   const { movieId } = useParams();
   const [cast, setCast] = useState([]);
-  const fetchCredits = async () => {
+  
+  const fetchCredits = async (movieId) => {
     setStatus('pending');
     try {
       const { cast } = await movieCredits({
@@ -25,8 +26,8 @@ export default function Cast() {
     }
   };
   useEffect(()=>{
-    fetchCredits()
-  },[])
+    fetchCredits(movieId)
+  },[movieId, fetchCredits])
 
   if(status==='rejected'){
     return <div>oops</div>

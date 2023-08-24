@@ -1,10 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Loader from 'components/Loader/Loader';
 import { Suspense, useEffect, useState } from 'react';
-import { NavLink, Outlet, useLocation, useParams } from 'react-router-dom';
+import { Outlet, useLocation, useParams } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
-import { StyledLink } from './MovieDetails.styled';
+import {
+  AditionalTitle,
+  GoBack,
+  ImgCard,
+  MovieDeteils,
+  MovieGenders,
+  MoviesName,
+  StyledLink,
+  Wraper,
+} from './MovieDetails.styled';
 import { moviesDeteils } from 'Fetch/fetch';
 import { useStateContext } from 'GlobalContext/GlobalContext';
 
@@ -39,8 +48,8 @@ export default function MovieDetails() {
   useEffect(() => {
     fetchMoviesDeteils();
   }, []);
-  if(status==='rejected'){
-    return <div>oops</div>
+  if (status === 'rejected') {
+    return <div>oops</div>;
   }
   if (status === 'pending') {
     return <Loader />;
@@ -48,30 +57,32 @@ export default function MovieDetails() {
   if (status === 'resolved') {
     return (
       <Container>
-        <NavLink to={location.state?.from ? location.state.from : '/'}>
+        <GoBack to={location.state?.from ? location.state.from : '/'}>
           Go back
-        </NavLink>
-        <div>
-          <Card style={{ width: '18rem' }}>
-            <Card.Img
+        </GoBack>
+        <Wraper>
+          <Card>
+            <ImgCard
               variant="top"
               src={`https://image.tmdb.org/t/p/w500${posterImg}`}
               width={200}
-              height={300}
+              height={400}
             />
           </Card>
-          <Card.Body>
-            <Card.Title>{title}</Card.Title>
+          <MovieDeteils>
+            <MoviesName>{title}</MoviesName>
             <Card.Text>User score {userScore}</Card.Text>
             <Card.Title>Owervier</Card.Title>
             <Card.Text>{overview}</Card.Text>
             <Card.Title>Genres</Card.Title>
-            {genres.map(({ name, id }) => {
-              return <Card.Text key={id}>{name}</Card.Text>;
-            })}
-          </Card.Body>
-        </div>
-        <h3>Aditional informations</h3>
+            <MovieGenders>
+              {genres.map(({ name, id }) => {
+                return <li><Card.Text key={id}>{name}</Card.Text></li>;
+              })}
+            </MovieGenders>
+          </MovieDeteils>
+        </Wraper>
+        <AditionalTitle>Aditional informations</AditionalTitle>
         <ul>
           <li>
             {' '}
