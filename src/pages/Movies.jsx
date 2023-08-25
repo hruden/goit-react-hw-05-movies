@@ -9,16 +9,19 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Alert from 'react-bootstrap/Alert';
+import { useSearchParams } from 'react-router-dom';
 
 export default function Movies() {
-  const [searchQuery, setSearchQuery] = useState('');
+  // const [searchQuery, setSearchQuery] = useState('');
   const [status, setStatus] = useState('idel');
   const [q, setQ] = useState('');
-  const [pages, setPages] = useState(null);
+  const [pages, setPages] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
-
-  const { searchResult, setSearchResult, erorrMessedge, setErorrMessedge, setSearchParams } =
+  const [searchParams, setSearchParams] = useSearchParams()
+  const { searchResult, setSearchResult, erorrMessedge, setErorrMessedge} =
     useStateContext();
+
+    const quarySearchParams = searchParams.get('search');
 
   const handleChange = ({ target }) => {
     setQ(target.value);
@@ -29,7 +32,7 @@ export default function Movies() {
     setTotalPage(0);
     setPages(1);
     setSearchResult([]);
-    setSearchQuery(q);
+    setSearchParams({'search': q});
     
     reset();
   };
@@ -40,7 +43,7 @@ export default function Movies() {
     setStatus('pending');
     try {
       const { results, page, total_pages } = await searchMovies({
-        searchQuery,
+        quarySearchParams,
         pages,
       });
       setSearchResult(s => [...s, ...results]);
@@ -54,14 +57,12 @@ export default function Movies() {
     }
   };
   useEffect(() => {
-    if (!searchQuery) {
-      return;
+    if (!quarySearchParams) {
+      return ;
     }
-    setSearchParams({'search': searchQuery})
-
 
     fetchMovies();
-  }, [searchQuery]);
+  }, [quarySearchParams]);
   useEffect(() => {
     if (pages === 1) {
       return;

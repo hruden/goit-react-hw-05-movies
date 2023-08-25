@@ -1,11 +1,11 @@
 import axios from 'axios';
 
 
-export const searchMovies = async({searchQuery, pages})=>{
+export const searchMovies = async({quarySearchParams, pages})=>{
 const options = {
   method: 'GET',
   url: 'https://api.themoviedb.org/3/search/movie',
-  params: {include_adult: 'false', language: 'en-US', page: pages, query:searchQuery},
+  params: {include_adult: 'false', language: 'en-US', page: pages, query:quarySearchParams},
   headers: {
     accept: 'application/json',
     Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3NDhhNWJjNGE5NzY0ZGQyYzYyODU5ZTM3NWRlZTAyYiIsInN1YiI6IjY0ZTA5MTg0MzcxMDk3MDBlMjI5YTBmMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.g-bCoPoM0MyKecC5WVZSkfUBuWYiN7qkymQ5XguYDg8'
