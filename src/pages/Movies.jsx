@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Alert from 'react-bootstrap/Alert';
+// import { useLocation, useSearchParams } from 'react-router-dom';
 
 export default function Movies() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -16,18 +17,24 @@ export default function Movies() {
   const [q, setQ] = useState('');
   const [pages, setPages] = useState(null);
   const [totalPage, setTotalPage] = useState(0);
-  const { searchResult, setSearchResult, erorrMessedge, setErorrMessedge } =
+  // const location = useLocation();
+
+  // const [searchParams, setSearchParams] = useSearchParams()
+
+  const { searchResult, setSearchResult, erorrMessedge, setErorrMessedge, searchParams, setSearchParams } =
     useStateContext();
 
   const handleChange = ({ target }) => {
     setQ(target.value);
   };
+
   const handlSubmit = e => {
     e.preventDefault();
     setTotalPage(0);
     setPages(1);
     setSearchResult([]);
     setSearchQuery(q);
+    
     reset();
   };
   const reset = () => {
@@ -44,13 +51,6 @@ export default function Movies() {
       setPages(page);
       setTotalPage(total_pages);
       setStatus('resolved');
-      // if (!searchResult.length) {
-      //   return console.log('Sorry, there are no movies matching your search query. Please try again.')
-
-      // setErorrMessedge(
-      //   'Sorry, there are no images matching your search query. Please try again.'
-      // );
-      // }
     } catch (error) {
       setStatus('rejected');
       setErorrMessedge('Oops...something went wrong');
@@ -61,12 +61,22 @@ export default function Movies() {
     if (!searchQuery) {
       return;
     }
+    setSearchParams({'search': searchQuery})
+    // console.log(searchParams)
+    console.log(searchParams.get('search'))
+
+
     fetchMovies();
   }, [searchQuery]);
   useEffect(() => {
     if (pages === 1) {
       return;
     }
+    // searchParams.get('search')
+    console.log(searchParams.get('search'))
+    // console.log(location)
+
+    // setSearchParams(searchParams)
     fetchMovies();
   }, [pages]);
   const isShowLoadeMore = !pages || totalPage > pages;
