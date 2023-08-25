@@ -9,7 +9,6 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Alert from 'react-bootstrap/Alert';
-// import { useLocation, useSearchParams } from 'react-router-dom';
 
 export default function Movies() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -17,11 +16,8 @@ export default function Movies() {
   const [q, setQ] = useState('');
   const [pages, setPages] = useState(null);
   const [totalPage, setTotalPage] = useState(0);
-  // const location = useLocation();
 
-  // const [searchParams, setSearchParams] = useSearchParams()
-
-  const { searchResult, setSearchResult, erorrMessedge, setErorrMessedge, searchParams, setSearchParams } =
+  const { searchResult, setSearchResult, erorrMessedge, setErorrMessedge, setSearchParams } =
     useStateContext();
 
   const handleChange = ({ target }) => {
@@ -62,8 +58,6 @@ export default function Movies() {
       return;
     }
     setSearchParams({'search': searchQuery})
-    // console.log(searchParams)
-    console.log(searchParams.get('search'))
 
 
     fetchMovies();
@@ -72,11 +66,6 @@ export default function Movies() {
     if (pages === 1) {
       return;
     }
-    // searchParams.get('search')
-    console.log(searchParams.get('search'))
-    // console.log(location)
-
-    // setSearchParams(searchParams)
     fetchMovies();
   }, [pages]);
   const isShowLoadeMore = !pages || totalPage > pages;
@@ -106,7 +95,7 @@ export default function Movies() {
       {status === 'pending' && <Loader />}
       {status === 'resolved' && (
         <>
-          <SearchResults
+          <SearchResults 
             title={`Faund results ${Number(searchResult.length)}`}
           />
           {isShowLoadeMore && <Paginations setPages={setPages} />}

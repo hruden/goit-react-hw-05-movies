@@ -18,7 +18,7 @@ export default function SearchResults({title}) {
               <ListGroup.Item key={id}>
                 <StyledLink
                   to={`/movies/${id}`}
-                  state={{ from: location.pathname }}
+                  state={{ from: location }}
                 >
                   {title}
                 </StyledLink>
