@@ -55,7 +55,9 @@ export default function MovieDetails() {
   useEffect(() => {
     fetchMoviesDeteils();
   }, []);
+  
   const goBack = useRef(location.state)
+
   if (status === 'rejected') {
     return (
     <Alert variant="danger">
@@ -73,7 +75,7 @@ export default function MovieDetails() {
   if (status === 'resolved') {
     return (
       <Container>
-        <GoBack to={goBack.current?.from ? goBack.current.from : '/' }>
+        <GoBack to={goBack.current?.from ? goBack.current.from : goBack.current = '/' }>
           Go back
         </GoBack>
         <Wraper>
