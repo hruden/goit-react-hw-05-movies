@@ -53,7 +53,6 @@ export default function MovieDetails() {
     }
   };
   useEffect(() => {
-    console.log(location)
     fetchMoviesDeteils();
   }, []);
   
