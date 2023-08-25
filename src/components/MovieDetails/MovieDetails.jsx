@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Loader from 'components/Loader/Loader';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { Outlet, useLocation, useParams } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
@@ -55,6 +55,7 @@ export default function MovieDetails() {
   useEffect(() => {
     fetchMoviesDeteils();
   }, []);
+  const goBack = useRef(location.state)
   if (status === 'rejected') {
     return (
     <Alert variant="danger">
@@ -72,7 +73,7 @@ export default function MovieDetails() {
   if (status === 'resolved') {
     return (
       <Container>
-        <GoBack to={location.state?.from ? location.state.from : '/'}>
+        <GoBack to={goBack.current?.from ? goBack.current.from : '/' }>
           Go back
         </GoBack>
         <Wraper>
